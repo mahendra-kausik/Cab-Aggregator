@@ -1,0 +1,221 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents, Polyline } from 'react-leaflet';
+import L, { LeafletMouseEvent } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+import './MapComponent.css';
+
+// Fix for default markers in react-leaflet
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
+
+// Custom icons for different marker types
+const createCustomIcon = (color: string) => new L.Icon({
+  iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const pickupIcon = createCustomIcon('green');
+const destinationIcon = createCustomIcon('red');
+const driverIcon = createCustomIcon('blue');
+
+interface MapComponentProps {
+  center: [number, number];
+  zoom?: number;
+  height?: string;
+  pickup?: {
+    coordinates: [number, number];
+    address: string;
+  } | null;
+  destination?: {
+    coordinates: [number, number];
+    address: string;
+  } | null;
+  driverLocation?: [number, number] | null;
+  route?: [number, number][] | null;
+  onLocationSelect?: (coordinates: [number, number], type: 'pickup' | 'destination') => void;
+  selectionMode?: 'pickup' | 'destination' | null;
+  className?: string;
+  showRoute?: boolean;
+}
+
+// Component to handle map clicks
+const MapClickHandler: React.FC<{
+  onLocationSelect?: (coordinates: [number, number], type: 'pickup' | 'destination') => void;
+  selectionMode?: 'pickup' | 'destination' | null;
+}> = ({ onLocationSelect, selectionMode }) => {
+  useMapEvents({
+    click: (e: LeafletMouseEvent) => {
+      if (onLocationSelect && selectionMode) {
+        const { lat, lng } = e.latlng;
+        onLocationSelect([lng, lat], selectionMode);
+      }
+    },
+  });
+  return null;
+};
+
+const MapComponent: React.FC<MapComponentProps> = ({
+  center,
+  zoom = 13,
+  height = '400px',
+  pickup,
+  destination,
+  driverLocation,
+  route,
+  onLocationSelect,
+  selectionMode,
+  className = '',
+  showRoute = true
+}) => {
+  const [mapboxError, setMapboxError] = useState(false);
+  const mapRef = useRef<L.Map>(null);
+
+  // Check if Mapbox token is available and valid
+  const mapboxToken = import.meta.env.VITE_MAPBOX_ACCESS_TOKEN;
+  const isValidMapboxToken = mapboxToken &&
+    // Debug: log the route being passed
+    React.useEffect(() => {
+      if (route && route.length > 1) {
+        // Log first and last point for sanity
+        console.log('MapComponent: route received', route[0], '...', route[route.length - 1]);
+      } else if (route) {
+        console.log('MapComponent: route received but too short', route);
+      } else {
+        console.log('MapComponent: no route, will use straight line');
+      }
+    }, [route]);
+
+  mapboxToken.startsWith('pk.') &&
+    mapboxToken !== 'your_mapbox_token_here' &&
+    mapboxToken !== 'pk.your_mapbox_access_token_here';
+  const useMapbox = isValidMapboxToken && !mapboxError;
+
+  // Tile layer configuration
+  const tileLayerUrl = useMapbox
+    ? `https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`
+    : 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
+
+  // Attribution strings are omitted to avoid TS type friction in some setups
+
+  // Handle tile loading errors (fallback to OSM)
+  const handleTileError = () => {
+    if (useMapbox) {
+      setMapboxError(true);
+    }
+  };
+
+  // Update map view when center changes
+  useEffect(() => {
+    if (mapRef.current) {
+      mapRef.current.setView(center, zoom);
+    }
+  }, [center, zoom]);
+
+  // Auto-fit bounds when pickup and destination are set
+  useEffect(() => {
+    if (mapRef.current && pickup && destination) {
+      const bounds = L.latLngBounds([
+        [pickup.coordinates[1], pickup.coordinates[0]],
+        [destination.coordinates[1], destination.coordinates[0]]
+      ]);
+
+      // Add driver location to bounds if available
+      if (driverLocation) {
+        bounds.extend([driverLocation[1], driverLocation[0]]);
+      }
+
+      mapRef.current.fitBounds(bounds, { padding: [20, 20] });
+    }
+  }, [pickup, destination, driverLocation]);
+
+  return (
+    <div className={`map-container ${className}`} style={{ height }}>
+      <MapContainer
+        center={center}
+        zoom={zoom}
+        style={{ height: '100%', width: '100%' }}
+        ref={mapRef}
+      >
+        <TileLayer
+          url={tileLayerUrl}
+          eventHandlers={{ tileerror: handleTileError }}
+        />
+
+        <MapClickHandler
+          onLocationSelect={onLocationSelect}
+          selectionMode={selectionMode}
+        />
+
+        {pickup && (
+          <Marker
+            position={[pickup.coordinates[1], pickup.coordinates[0]]}
+            icon={pickupIcon}
+          >
+            <Popup>
+              <strong>Pickup Location</strong><br />
+              {pickup.address}
+            </Popup>
+          </Marker>
+        )}
+
+        {destination && (
+          <Marker
+            position={[destination.coordinates[1], destination.coordinates[0]]}
+            icon={destinationIcon}
+          >
+            <Popup>
+              <strong>Destination</strong><br />
+              {destination.address}
+            </Popup>
+          </Marker>
+        )}
+
+        {driverLocation && (
+          <Marker
+            position={[driverLocation[1], driverLocation[0]]}
+            icon={driverIcon}
+          >
+            <Popup>
+              <strong>Driver Location</strong>
+            </Popup>
+          </Marker>
+        )}
+
+        {/* Route polyline */}
+        {showRoute && route && route.length > 1 && (
+          <Polyline
+            positions={route.map(coord => [coord[1], coord[0]])}
+            pathOptions={{ color: '#007bff', weight: 4, opacity: 0.7 }}
+          />
+        )}
+
+        {/* Simple route line between pickup and destination */}
+        {showRoute && !route && pickup && destination && (
+          <Polyline
+            positions={[
+              [pickup.coordinates[1], pickup.coordinates[0]],
+              [destination.coordinates[1], destination.coordinates[0]]
+            ]}
+            pathOptions={{ color: '#28a745', weight: 3, opacity: 0.6, dashArray: '10, 10' }}
+          />
+        )}
+      </MapContainer>
+
+      {mapboxError && (
+        <div className="map-fallback-notice">
+          <small>Using OpenStreetMap tiles (Mapbox unavailable)</small>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default MapComponent;

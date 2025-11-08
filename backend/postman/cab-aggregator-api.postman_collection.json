@@ -1,0 +1,717 @@
+{
+  "info": {
+    "name": "Cab Aggregator API Collection",
+    "description": "Comprehensive API testing collection for Cab Aggregator Local Edition",
+    "version": "1.0.0",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set base URL if not already set",
+          "if (!pm.environment.get('baseUrl')) {",
+          "    pm.environment.set('baseUrl', 'http://localhost:5000');",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Register Phone",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Response has success property', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('success', true);",
+                  "});",
+                  "",
+                  "pm.test('Response contains message about OTP', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.message).to.include('OTP');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"{{testPhone}}\",\n  \"name\": \"Test User\",\n  \"role\": \"rider\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register-phone",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register-phone"]
+            }
+          }
+        },
+        {
+          "name": "Get OTP (Dev Only)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains OTP', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('otp');",
+                  "    pm.environment.set('testOTP', jsonData.data.otp);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/dev/otp/{{testPhone}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "dev", "otp", "{{testPhone}}"]
+            }
+          }
+        },
+        {
+          "name": "Verify OTP",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains token', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('tokens');",
+                  "    pm.expect(jsonData.data.tokens).to.have.property('accessToken');",
+                  "    pm.environment.set('authToken', jsonData.data.tokens.accessToken);",
+                  "});",
+                  "",
+                  "pm.test('Response contains user data', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('user');",
+                  "    pm.environment.set('userId', jsonData.data.user._id);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"{{testPhone}}\",\n  \"otp\": \"{{testOTP}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/verify-otp",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "verify-otp"]
+            }
+          }
+        },
+        {
+          "name": "Admin Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains admin token', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('tokens');",
+                  "    pm.environment.set('adminToken', jsonData.data.tokens.accessToken);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{adminEmail}}\",\n  \"password\": \"{{adminPassword}}\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login-email",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login-email"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Rides",
+      "item": [
+        {
+          "name": "Get Fare Estimate",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains fare estimate', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('estimatedFare');",
+                  "    pm.expect(jsonData.data).to.have.property('estimatedDistance');",
+                  "    pm.expect(jsonData.data).to.have.property('estimatedDuration');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rides/estimate?pickupLat=40.7128&pickupLng=-74.006&destLat=40.7589&destLng=-73.996",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rides", "estimate"],
+              "query": [
+                {
+                  "key": "pickupLat",
+                  "value": "40.7128"
+                },
+                {
+                  "key": "pickupLng",
+                  "value": "-74.006"
+                },
+                {
+                  "key": "destLat",
+                  "value": "40.7589"
+                },
+                {
+                  "key": "destLng",
+                  "value": "-73.996"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Book Ride",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 201', function () {",
+                  "    pm.response.to.have.status(201);",
+                  "});",
+                  "",
+                  "pm.test('Response contains ride data', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('ride');",
+                  "    pm.expect(jsonData.data.ride).to.have.property('_id');",
+                  "    pm.environment.set('rideId', jsonData.data.ride._id);",
+                  "});",
+                  "",
+                  "pm.test('Ride status is requested', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.ride.status).to.equal('requested');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"pickup\": {\n    \"address\": \"123 Test Street, New York, NY\",\n    \"coordinates\": {\n      \"type\": \"Point\",\n      \"coordinates\": [-74.006, 40.7128]\n    }\n  },\n  \"destination\": {\n    \"address\": \"456 Test Avenue, New York, NY\",\n    \"coordinates\": {\n      \"type\": \"Point\",\n      \"coordinates\": [-73.996, 40.7589]\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rides/book",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rides", "book"]
+            }
+          }
+        },
+        {
+          "name": "Get Ride History",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains rides array', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('rides');",
+                  "    pm.expect(jsonData.data.rides).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rides/history",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rides", "history"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Driver Operations",
+      "item": [
+        {
+          "name": "Get Pending Rides",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains rides array', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('rides');",
+                  "    pm.expect(jsonData.data.rides).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{driverToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rides/driver/pending",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rides", "driver", "pending"]
+            }
+          }
+        },
+        {
+          "name": "Accept Ride",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Ride status is accepted', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.ride.status).to.equal('accepted');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{driverToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/rides/{{rideId}}/accept",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rides", "{{rideId}}", "accept"]
+            }
+          }
+        },
+        {
+          "name": "Update Ride Status",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Ride status updated', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data.ride).to.have.property('status');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{driverToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"in_progress\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/rides/{{rideId}}/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "rides", "{{rideId}}", "status"]
+            }
+          }
+        },
+        {
+          "name": "Update Driver Location",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Location updated successfully', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{driverToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"location\": {\n    \"type\": \"Point\",\n    \"coordinates\": [-74.010, 40.715]\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/location",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "location"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Payments",
+      "item": [
+        {
+          "name": "Process Payment",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Payment processed successfully', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.success).to.be.true;",
+                  "    pm.expect(jsonData.data).to.have.property('paymentId');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{authToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rideId\": \"{{rideId}}\",\n  \"paymentMethod\": \"card\",\n  \"amount\": 15.50,\n  \"cardToken\": \"tok_visa\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/process",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payments", "process"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin Operations",
+      "item": [
+        {
+          "name": "Get Platform Analytics",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains analytics data', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('totalUsers');",
+                  "    pm.expect(jsonData.data).to.have.property('totalRides');",
+                  "    pm.expect(jsonData.data).to.have.property('revenue');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/analytics",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "analytics"]
+            }
+          }
+        },
+        {
+          "name": "Get All Users",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Response contains users array', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.data).to.have.property('users');",
+                  "    pm.expect(jsonData.data.users).to.be.an('array');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{adminToken}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/admin/users",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "admin", "users"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "item": [
+        {
+          "name": "Basic Health Check",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status code is 200', function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "",
+                  "pm.test('Service is healthy', function () {",
+                  "    const jsonData = pm.response.json();",
+                  "    pm.expect(jsonData.status).to.equal('healthy');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "health"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

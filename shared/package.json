@@ -1,0 +1,19 @@
+{
+  "name": "cab-aggregator-shared",
+  "version": "1.0.0",
+  "description": "Shared utilities and types for Cab Aggregator Local Edition",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "dependencies": {
+    "joi": "^17.9.2"
+  },
+  "devDependencies": {
+    "jest": "^29.6.2",
+    "@types/jest": "^29.5.4"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

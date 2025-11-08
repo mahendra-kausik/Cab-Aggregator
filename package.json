@@ -1,0 +1,54 @@
+{
+  "name": "cab-aggregator-local",
+  "version": "1.0.0",
+  "description": "Local MERN stack cab aggregator application for academic demonstration",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend",
+    "shared"
+  ],
+  "scripts": {
+    "install:all": "npm install && npm install --prefix backend && npm install --prefix frontend && npm install --prefix shared",
+    "dev": "docker-compose up --build",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev:frontend": "npm run dev --prefix frontend",
+    "build": "npm run build --prefix frontend",
+    "test": "npm run test --prefix backend && npm run test --prefix frontend",
+    "test:backend": "npm run test --prefix backend",
+    "test:backend:unit": "npm run test:unit --prefix backend",
+    "test:backend:integration": "npm run test:integration --prefix backend",
+    "test:backend:system": "npm run test:system --prefix backend",
+    "test:frontend": "npm run test --prefix frontend",
+    "test:frontend:unit": "npm run test:unit --prefix frontend",
+    "test:frontend:integration": "npm run test:integration --prefix frontend",
+    "test:frontend:system": "npm run test:system --prefix frontend",
+    "test:coverage": "npm run test:coverage --prefix backend && npm run test:coverage --prefix frontend",
+    "seed": "npm run seed --prefix backend",
+    "setup": "node scripts/dev-setup.js",
+    "verify": "node scripts/verify-setup.js",
+    "health": "node scripts/health-check.js",
+    "clean": "docker-compose down -v && docker system prune -f"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/cab-aggregator-local.git"
+  },
+  "keywords": [
+    "mern",
+    "cab-aggregator",
+    "ride-hailing",
+    "socket.io",
+    "docker",
+    "academic-project"
+  ],
+  "author": "Your Name",
+  "license": "MIT"
+}

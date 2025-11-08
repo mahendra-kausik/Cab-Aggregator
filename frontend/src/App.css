@@ -1,0 +1,52 @@
+/* App Component Styles */
+.App {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Loading states */
+.app-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: var(--bg-color);
+}
+
+/* Error states */
+.app-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: var(--spacing-xl);
+  text-align: center;
+  background-color: var(--bg-color);
+}
+
+.app-error h2 {
+  color: var(--error-color);
+  margin-bottom: var(--spacing-md);
+}
+
+.app-error p {
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-lg);
+}
+
+.app-error button {
+  background-color: var(--accent-color);
+  color: white;
+  border: none;
+  padding: var(--spacing-sm) var(--spacing-lg);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-size: var(--font-size-base);
+  transition: background-color var(--transition-base);
+}
+
+.app-error button:hover {
+  background-color: #2980b9;
+}

@@ -1,0 +1,457 @@
+.driver-profile {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.profile-container h1 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+}
+
+.message {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.message-icon {
+    font-size: 1.25rem;
+}
+
+.error-message {
+    background-color: #fee;
+    border: 1px solid #fcc;
+    color: #c33;
+}
+
+.success-message {
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    color: #155724;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.profile-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+}
+
+/* Availability Card */
+.availability-card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.availability-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+}
+
+.availability-info h3 {
+    font-size: 1.5rem;
+    margin: 0 0 0.5rem 0;
+}
+
+.availability-info p {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.status-available {
+    color: #4CAF50;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+}
+
+.status-unavailable {
+    color: #ff6b6b;
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+}
+
+/* Toggle Switch */
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 80px;
+    height: 40px;
+    flex-shrink: 0;
+}
+
+.toggle-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.3);
+    transition: 0.4s;
+    border-radius: 40px;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: '';
+    height: 32px;
+    width: 32px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+input:checked+.toggle-slider {
+    background-color: rgba(76, 175, 80, 0.8);
+}
+
+input:checked+.toggle-slider:before {
+    transform: translateX(40px);
+}
+
+.toggle-slider:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+input:checked+.toggle-slider:hover {
+    background-color: rgba(76, 175, 80, 1);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.card-header h2 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin: 0;
+}
+
+.profile-avatar {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
+.avatar-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+}
+
+.avatar-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-initials {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: white;
+}
+
+.avatar-info h3 {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin: 0 0 0.25rem 0;
+}
+
+.user-role {
+    color: #6c757d;
+    font-size: 1rem;
+    margin: 0 0 0.25rem 0;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.user-rating {
+    color: #ffc107;
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 600;
+}
+
+.section-divider {
+    margin: 2rem 0 1rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #e9ecef;
+}
+
+.section-divider h3 {
+    font-size: 1.25rem;
+    color: #667eea;
+    margin: 0 0 1rem 0;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-group input:disabled,
+.form-group input.input-disabled {
+    background-color: #f8f9fa;
+    color: #6c757d;
+    cursor: not-allowed;
+}
+
+.form-hint {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.8rem;
+    color: #6c757d;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    justify-content: flex-end;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-danger {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #667eea;
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: #5568d3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(108, 117, 125, 0.3);
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+}
+
+/* Statistics Card */
+.stats-card {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    color: white;
+}
+
+.stats-card .card-header {
+    border-bottom-color: rgba(255, 255, 255, 0.2);
+}
+
+.stats-card .card-header h2 {
+    color: white;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-4px);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.stat-icon {
+    font-size: 2.5rem;
+    flex-shrink: 0;
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.stats-loading {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+/* Danger Zone */
+.danger-zone {
+    border: 2px solid #dc3545;
+}
+
+.danger-zone .card-header h2 {
+    color: #dc3545;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .driver-profile {
+        padding: 1rem;
+    }
+
+    .profile-container h1 {
+        font-size: 1.5rem;
+    }
+
+    .profile-card {
+        padding: 1.25rem;
+    }
+
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .availability-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .profile-avatar {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .avatar-circle {
+        width: 80px;
+        height: 80px;
+    }
+
+    .avatar-initials {
+        font-size: 2rem;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions button {
+        width: 100%;
+    }
+}

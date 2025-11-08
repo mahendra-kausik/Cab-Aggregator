@@ -1,0 +1,591 @@
+.rider-book-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.page-header {
+  margin-bottom: 20px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.page-header h2 {
+  margin: 0;
+  color: #333;
+}
+
+.page-header p {
+  margin: 0;
+  color: #666;
+}
+
+.location-btn {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.location-btn:hover {
+  background: #2980b9;
+}
+
+.location-btn:active {
+  transform: translateY(1px);
+}
+
+.ride-status-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.connection-status {
+  font-size: 12px;
+  color: #f39c12;
+  background: #fef9e7;
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.status {
+  font-weight: bold;
+  text-transform: capitalize;
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+
+.status.requested {
+  color: #f39c12;
+  background: #fef9e7;
+}
+
+.status.matched {
+  color: #3498db;
+  background: #ebf3fd;
+}
+
+.status.accepted {
+  color: #2ecc71;
+  background: #eafaf1;
+}
+
+.status.in_progress {
+  color: #27ae60;
+  background: #e8f5e8;
+}
+
+.status.completed {
+  color: #95a5a6;
+  background: #f4f4f4;
+}
+
+.status.cancelled {
+  color: #e74c3c;
+  background: #fdeaea;
+}
+
+.error-message,
+.success-message {
+  border-radius: 4px;
+  padding: 12px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.error-message {
+  background: #fee;
+  border: 1px solid #fcc;
+}
+
+.error-message p {
+  margin: 0;
+  color: #c33;
+}
+
+.error-message button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #c33;
+}
+
+.success-message {
+  background: #eafaf1;
+  border: 1px solid #c3e6cb;
+}
+
+.success-message p {
+  margin: 0;
+  color: #155724;
+}
+
+.success-message button {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #155724;
+}
+
+.booking-container {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 20px;
+  align-items: start;
+}
+
+.map-section {
+  min-height: 400px;
+}
+
+.booking-form {
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.location-inputs {
+  margin-bottom: 20px;
+}
+
+.input-group {
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 500;
+  color: #333;
+}
+
+.input-with-button {
+  display: flex;
+  gap: 8px;
+}
+
+.search-input-container {
+  flex: 1;
+  position: relative;
+}
+
+.search-input-container input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.search-input-container input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.map-select-btn {
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.map-select-btn:hover {
+  background: #f8f9fa;
+  border-color: #007bff;
+}
+
+.map-select-btn.active {
+  background: #007bff;
+  border-color: #007bff;
+  color: white;
+}
+
+.search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-radius: 0 0 4px 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-result {
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.search-result:hover {
+  background: #f8f9fa;
+}
+
+.search-result:last-child {
+  border-bottom: none;
+}
+
+.fare-estimate {
+  background: white;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 20px;
+  border: 1px solid #e9ecef;
+}
+
+.fare-estimate h3 {
+  margin: 0 0 12px 0;
+  color: #333;
+  font-size: 16px;
+}
+
+.fare-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fare-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.fare-item.surge {
+  color: #e74c3c;
+  font-weight: 500;
+}
+
+.fare-total {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  font-size: 16px;
+  padding-top: 8px;
+  border-top: 1px solid #eee;
+  color: #333;
+}
+
+.booking-actions {
+  margin-top: 20px;
+}
+
+.book-ride-btn {
+  width: 100%;
+  padding: 12px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.book-ride-btn:hover:not(:disabled) {
+  background: #0056b3;
+}
+
+.book-ride-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+}
+
+.ride-status {
+  background: white;
+  border-radius: 6px;
+  padding: 16px;
+  border: 1px solid #e9ecef;
+}
+
+.ride-status h3 {
+  margin: 0 0 12px 0;
+  color: #333;
+}
+
+.ride-details {
+  margin-bottom: 16px;
+}
+
+.ride-details p {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+}
+
+.ride-details p:last-child {
+  margin-bottom: 0;
+}
+
+.ride-actions {
+  padding-top: 12px;
+  border-top: 1px solid #eee;
+}
+
+.ride-actions p {
+  margin: 0 0 12px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.cancel-btn {
+  background: #dc3545;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #c82333;
+}
+
+.history-btn {
+  background: #28a745;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.history-btn:hover {
+  background: #218838;
+}
+
+.retry-btn {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.retry-btn:hover {
+  background: #0056b3;
+}
+
+.timeout-message {
+  color: #ff6b6b;
+  font-weight: 600;
+  font-size: 16px;
+  margin: 10px 0 5px 0;
+}
+
+.timeout-subtitle {
+  color: #666;
+  font-size: 14px;
+  margin: 0 0 15px 0;
+}
+
+.timeout-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  gap: 16px;
+}
+
+/* Loading spinner in button */
+.book-ride-btn .loading-container {
+  min-height: auto;
+  gap: 8px;
+  flex-direction: row;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .rider-book-page {
+    padding: 10px;
+  }
+
+  .booking-container {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .booking-form {
+    order: -1;
+    padding: 16px;
+  }
+
+  .map-section {
+    min-height: 300px;
+  }
+
+  .input-with-button {
+    flex-direction: column;
+  }
+
+  .map-select-btn {
+    align-self: flex-start;
+  }
+
+  .ride-status-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .rider-book-page {
+    padding: 5px;
+  }
+
+  .booking-form {
+    padding: 12px;
+  }
+
+  .fare-estimate {
+    padding: 12px;
+  }
+
+  .ride-status {
+    padding: 12px;
+  }
+
+  .page-header h2 {
+    font-size: 20px;
+  }
+
+  .fare-breakdown {
+    gap: 6px;
+  }
+
+  .fare-item {
+    font-size: 13px;
+  }
+
+  .fare-total {
+    font-size: 15px;
+  }
+}
+
+/* Animation for status changes */
+.status {
+  transition: all 0.3s ease;
+}
+
+/* Map selection mode styling */
+.map-container.selecting {
+  border: 2px solid #007bff;
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.3);
+}
+
+/* Route visualization enhancements */
+.map-section {
+  position: relative;
+}
+
+.route-info {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 8px 12px;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-size: 12px;
+  z-index: 1000;
+}
+
+.route-info.with-driver {
+  background: rgba(40, 167, 69, 0.95);
+  color: white;
+}
+
+/* Search results animation */
+.search-results {
+  animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Focus states for accessibility */
+.map-select-btn:focus,
+.book-ride-btn:focus,
+.cancel-btn:focus,
+.history-btn:focus {
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+.search-result:focus {
+  background: #e3f2fd;
+  outline: none;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .status {
+    border: 1px solid currentColor;
+  }
+
+  .fare-estimate,
+  .ride-status,
+  .booking-form {
+    border: 2px solid #333;
+  }
+}

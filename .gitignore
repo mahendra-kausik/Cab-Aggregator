@@ -1,0 +1,207 @@
+# Dependencies
+node_modules/
+*/node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.staging
+
+# Build outputs
+dist/
+build/
+*/dist/
+*/build/
+out/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Test coverage
+coverage/
+*/coverage/
+.nyc_output/
+*.lcov
+lcov.info
+lcov-report/
+
+# Backend test artifacts
+backend/__tests__/coverage/
+backend/coverage/
+
+# Frontend test artifacts  
+frontend/coverage/
+frontend/src/__tests__/coverage/
+
+# Test results
+test-results/
+junit.xml
+
+# Dependency directories
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache
+.cache
+.parcel-cache
+
+# next.js build output
+.next
+out
+
+# nuxt.js build output
+.nuxt
+
+# vuepress build output
+.vuepress/dist
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Vite
+.vite/
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*
+
+# Docker
+.dockerignore
+docker-compose.override.yml
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Temporary files
+tmp/
+temp/
+.tmp/
+*.tmp
+
+# Docker volumes
+mongodb_data/
+redis_data/
+postgres_data/
+
+# Lock files (optional - uncomment if you want to ignore)
+# package-lock.json
+# yarn.lock
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# MongoDB dumps
+dump/
+*.dump
+
+# Redis dumps
+dump.rdb
+appendonly.aof
+
+# Certificate files (never commit private keys!)
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+
+# Archive files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Editor directories
+.vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+
+# TypeScript
+*.tsbuildinfo
+
+# Build info
+.next/
+.nuxt/
+.output/
+.vercel/
+
+# Sentry
+.sentryclirc
+
+# Miscellaneous
+.turbo/
+*.local

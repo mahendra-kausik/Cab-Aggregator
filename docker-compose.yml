@@ -1,0 +1,95 @@
+version: '3.8'
+
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:6.0
+    container_name: cab-aggregator-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USERNAME:-cabadmin}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:-SecureDevPassword2024}
+      MONGO_INITDB_DATABASE: ${MONGO_DB_NAME:-cab_aggregator}
+    volumes:
+      - mongodb_data:/data/db
+      - ./scripts/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    networks:
+      - cab-aggregator-network
+
+  # Redis Cache (Optional)
+  redis:
+    image: redis:7-alpine
+    container_name: cab-aggregator-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes
+    volumes:
+      - redis_data:/data
+    networks:
+      - cab-aggregator-network
+
+  # Backend Service
+  backend:
+    build:
+      context: ./backend
+      target: development
+    container_name: cab-aggregator-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: ${NODE_ENV:-development}
+      PORT: 5000
+      MONGO_URI: mongodb://${MONGO_ROOT_USERNAME:-cabadmin}:${MONGO_ROOT_PASSWORD:-SecureDevPassword2024}@mongodb:27017/${MONGO_DB_NAME:-cab_aggregator}?authSource=admin
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-key-change-in-production}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-24h}
+      MAPBOX_ACCESS_TOKEN: ${MAPBOX_ACCESS_TOKEN:-}
+      # Stripe removed
+      TWILIO_ACCOUNT_SID: ${TWILIO_ACCOUNT_SID:-}
+      TWILIO_AUTH_TOKEN: ${TWILIO_AUTH_TOKEN:-}
+      TWILIO_PHONE_NUMBER: ${TWILIO_PHONE_NUMBER:-}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+      - redis
+    networks:
+      - cab-aggregator-network
+
+  # Frontend Service
+  frontend:
+    build:
+      context: ./frontend
+      target: development
+    container_name: cab-aggregator-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:5000/api}
+      VITE_SOCKET_URL: ${VITE_SOCKET_URL:-http://localhost:5000}
+      VITE_MAPBOX_ACCESS_TOKEN: ${VITE_MAPBOX_ACCESS_TOKEN:-}
+    # Stripe removed
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - cab-aggregator-network
+
+volumes:
+  mongodb_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  cab-aggregator-network:
+    driver: bridge
